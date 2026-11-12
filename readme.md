@@ -334,7 +334,7 @@ HDR, Detail, and GPU and memory (last: the rows to change when something is wron
 | | Render resolution | Auto (the game's own dynamic resolution), 100%, 75%, 67%, 50% (each with its size). With DLSS, FSR 3.1 or FSR 4: Auto, Quality (67%), Balanced (58%), Performance (50%), Ultra Performance (33%). With DLAA or FSR 4 Native AA: Native. With Off: Auto, 100%, 75%, 67%, 50%, 33% | Auto |
 | | Sharpness | 0 to 100%, in steps of 10 | 0% |
 | | Frame generation | Off, Auto, 2x to 8x | Off |
-| | Frame generation by | Auto (NVIDIA DLSS Frame Generation where it runs: RTX 40 and newer, with a temporal Upscaler; else the built-in one), Built-in (changes at once) | Auto |
+| | Frame generation by | Auto (NVIDIA DLSS Frame Generation where it runs: RTX 40 and newer, with a temporal Upscaler; else the built-in one; with frame generation on, the row shows who makes the frames, as Auto: DLSS FG, and why not DLSS FG when another does), Built-in FG (changes at once) | Auto |
 | | Frame pacing | Off, On | Off |
 | | Game frame rate cap | 60, 90, 120, 144, 165, 240 FPS, Uncapped (after a restart) | 60 FPS |
 | | NVIDIA Reflex | Off, On, On + Boost (shown only on NVIDIA GPUs with `VK_NV_low_latency2`) | Off |
@@ -366,6 +366,7 @@ HDR, Detail, and GPU and memory (last: the rows to change when something is wron
 | | Game language | The game's 16 languages, each by its own name (after a restart) | The one built with |
 | | Menu language | Auto (the game's language), or English, Português (Brasil), Español (Latinoamérica), Español (España), Français, Deutsch, Italiano, Nederlands, Polski, Русский, 日本語, 한국어, 简体中文, 繁體中文 | Auto |
 | | Discord status | Off, On ("Playing Hookshot" and the time played in your Discord status, while Discord runs on this PC) | On |
+| | Skip opening | Off, On (skips the new-game opening: the story movie and Navi waking Link; later cutscenes and the title screen stay) | Off |
 | | Bug report | Saves a report into a new folder in `bug-reports` (below) | |
 | Controls | Controller in background | Off, On | Off |
 | | Mouse camera | As the stick, Native | As the stick |
@@ -502,7 +503,7 @@ HDR, Detail, and GPU and memory (last: the rows to change when something is wron
   down to 15 fps.
 - **FPS counter** shows in a corner (**FPS counter position**; at the top right while the menu is open), at one of
   four levels. **FPS** is the number alone (an options file's old On); with frame generation on, it also shows the
-  game's own rate. **Frame time** adds the game's frame time and its 1% low (the rate of the slowest 1% of frames over
+  game's own rate and who makes the frames: `Base 60, DLSS FG` (NVIDIA DLSS Frame Generation), `FSR 3.1 FG` or `Built-in FG`. **Frame time** adds the game's frame time and its 1% low (the rate of the slowest 1% of frames over
   the last 10 seconds). From this level on, the number and the frame time are green at the Game frame rate cap's rate,
   amber under it and red under two thirds of it. (The cap's rate is the display's refresh instead with V-Sync On when
   that is slower; with Uncapped and V-Sync not On there is no line, and the colours are against 60.) **Graph** adds
@@ -987,8 +988,9 @@ pipelines before the title, and every player's play adds to it. To send yours:
    opens the [Submit your pipelines](https://github.com/NotRexed/Hookshot/issues/2034) issue in your browser.
 3. Attach the zip to a comment there, paste the report and fill in where you played.
 
-The zip holds only `hookshot_pipeline_states.bin` (shader hashes, formats and draw state: no game code, game data or
-personal info) and the report (the version, OS, GPU and driver, output and render resolution, upscaler, frame
+The zip holds only `hookshot_pipeline_states.bin` (shader hashes, formats and draw state, and the hashes of the compute
+programs your play ran, so that a release can keep those ready too: no game code, game data or personal info) and the
+report (the version, OS, GPU and driver, output and render resolution, upscaler, frame
 generation, HDR and the mods the game loaded). Nothing is uploaded for you. If the list is missing or damaged, it says
 so and saves nothing. In a run without a window (`HOS_HEADLESS`) the menu saves the zip but opens nothing.
 

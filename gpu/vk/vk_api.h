@@ -15,7 +15,7 @@
 extern "C" {
 #endif
 
-#define MKWVK_API_VERSION 21
+#define MKWVK_API_VERSION 22
 enum { HOS_OPT_CHEAT_HEARTS = 32, HOS_OPT_CHEAT_FLIGHT, HOS_OPT_CHEAT_ACTION, HOS_OPT_CHEAT_CAMERA, HOS_OPT_CHEAT_SPEED };
 /* (hookshot) the Gameplay tab's Text size (host/oot_text_size.c): 0 the game's, 1 110%, 2 125%, 3 150%, 4 175% */
 enum { HOS_OPT_TEXT_SIZE = 10 };
@@ -195,7 +195,7 @@ typedef struct MkwVkHost {
     /* (version 20, hookshot) the main screen's size in pixels, as host/hos_main.c takes its shape at the start (Windows: the
        primary's; Linux: SDL's primary desktop), for the Insert menu's Aspect ratio and Output resolution rows: 0 when not known */
     int (*screen_size)(int *width, int *height);
-    /* (version 21, hookshot) a press of a key (a Windows virtual-key code) the control bridge sent (its key command,
+    /* (version 22, hookshot) a press of a key (a Windows virtual-key code) the control bridge sent (its key command,
        host/control.c), taken: 1 once a press. For the Insert menu, which takes it as a press of the player's own key, also
        with the game's window behind another one (a test drives the game while the player works in another window) */
     int (*take_bridge_key)(int key);
@@ -270,7 +270,11 @@ typedef struct MkwVkRenderer {
        to choose on this PC, -2 no step of a list row reaches value here, left as it was) */
     int (*setting)(int index, MkwVkSetting *out);
     int (*setting_set)(const char *key, int value, MkwVkSetting *out);
-    /* (version 21) shot's PNG, but of the window's picture as the player sees it, at the window's size: the Insert menu and the
+    /* (version 21, hookshot: 20 is the host's screen_size, which main added while this was 20 on its branch) the game gave a program its shaders (nvnProgramSetShaders, nvnProgramInitializeFromBuilder), on the
+       game's thread, before any draw uses it: what the back end kept ready for it can be loaded now (gpu/vk/vk_programs.cpp).
+       Its stages' code and control sections are in the game's memory at this call */
+    void (*nvn_program_created)(const nvn_prog *p);
+    /* (version 22) shot's PNG, but of the window's picture as the player sees it, at the window's size: the Insert menu and the
        FPS counter over the game's picture, letterboxing included. 0: not taken (too many waiting); done's ok is 0 when there is
        no window (headless) or its images cannot be read back on this GPU. With HDR on, the PNG holds the window's 10-bit
        or 16-bit values as 8 bits, without tone mapping */
