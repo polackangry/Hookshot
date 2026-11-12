@@ -181,12 +181,7 @@ def main():
     need("44 is reserved for HOS_OPT_SKIP_TITLE" in api, "option id 44 is no longer reserved for Skip title")
     need(re.search(r"enum \{ HOS_OPT_SKIP_OPENING = 52 \};", api), "Skip opening is not option id 52")
     need("HOS_OPT_SKIP_OPENING = 44" not in api, "Skip opening took id 44")
-    # (answered through the existing option callback: nothing of it in MkwVkHost or MkwVkRenderer, whose version other
-    # changes move)
-    interface = api[api.index("typedef struct MkwVkHost"):api.index("} MkwVkRenderer;")]
-    need(re.search(r"#define MKWVK_API_VERSION (\d+)\b", api) and int(re.search(r"#define MKWVK_API_VERSION (\d+)\b", api).group(1)) >= 19
-         and not re.search(r"skip_opening|SKIP_OPENING|opening", interface, re.I),
-         "Skip opening changed MkwVkHost or MkwVkRenderer")
+    need("skip_opening" not in api, "Skip opening added to MkwVkHost or MkwVkRenderer (it is an option id, not an interface change)")
 
     need(re.search(r"int skip_opening = 0;", menu_h), "Skip opening does not default off")
     row = re.search(r'\{TAB_GAMEPLAY, "Skip opening", &opts\.skip_opening, 0, 1, 1, tx_onoff,', menu)
